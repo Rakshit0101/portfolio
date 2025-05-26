@@ -1,133 +1,185 @@
 # Personal Portfolio Website
 
-A modern, responsive portfolio website built with React, TypeScript, and Tailwind CSS. This project showcases a developer's professional experience, skills, and contact information with a clean and intuitive interface.
+A modern, responsive portfolio website built with React, TypeScript, and Tailwind CSS that integrates with a Spring Boot backend. This project showcases a developer's professional experience, skills, and contact information with a clean and intuitive interface.
 
 ## 🚀 Tech Stack
 
-### Core Technologies
+### Frontend Technologies
 - **React 18** - A JavaScript library for building user interfaces
-- **TypeScript** - Adds static typing to JavaScript for better developer experience
-- **Vite** - Next generation frontend tooling for faster development and builds
-- **Tailwind CSS** - A utility-first CSS framework for rapid UI development
+- **TypeScript** - Adds static typing to JavaScript
+- **Vite** - Next generation frontend tooling
+- **Tailwind CSS** - Utility-first CSS framework
+- **React Query** - Data-fetching and state management
+- **Axios** - HTTP client for API requests
 
-### Additional Packages
-- **lucide-react** - Modern icon library with clean, consistent design
-- **ESLint** - For code linting and maintaining code quality
-- **Autoprefixer** - PostCSS plugin to parse CSS and add vendor prefixes
+### Backend Integration
+- Spring Boot REST API endpoints
+- JSON data format
+- CORS enabled for frontend access
 
 ## 📁 Project Structure
 
 ```
 src/
 ├── components/         # React components
-│   ├── About.tsx      # About section component
-│   ├── Contact.tsx    # Contact form component
-│   ├── Experience.tsx # Work experience section
-│   ├── Footer.tsx     # Footer component
-│   ├── Header.tsx     # Navigation header
-│   ├── Hero.tsx       # Hero/landing section
-│   ├── LRC.tsx        # Learning Resources component
-│   └── Skills.tsx     # Skills section component
+├── services/          # API integration services
+│   └── api.ts        # API client and type definitions
 ├── constants/         # Application constants
-│   └── index.ts      # Exports all constant data
 ├── types/            # TypeScript type definitions
-│   └── index.ts      # Common type interfaces
 ├── utils/            # Utility functions
-│   └── theme.ts      # Theme handling utility
 ├── App.tsx           # Root component
 └── main.tsx         # Application entry point
 ```
 
-## 🔄 Code Flow
+## 🔄 Data Flow
 
-1. **Entry Point (`main.tsx`)**
-   - Initializes React application
-   - Renders root App component
-   - Imports global styles
+### API Integration
 
-2. **App Component (`App.tsx`)**
-   - Acts as the main layout container
-   - Manages the overall structure
-   - Includes header, main content sections, and footer
+1. **API Service Layer (`services/api.ts`)**
+   - Configures Axios instance with base URL
+   - Defines TypeScript interfaces for API responses
+   - Implements service methods for each endpoint:
+     ```typescript
+     - GET /api/profile    -> Profile data
+     - GET /api/experiences -> Work experience
+     - GET /api/skills     -> Technical skills
+     ```
 
-3. **Theme Management (`utils/theme.ts`)**
-   - Handles dark/light mode switching
-   - Persists theme preference in localStorage
-   - Provides theme context throughout the app
+2. **React Query Integration**
+   - Configured in `main.tsx`
+   - Manages server state and caching
+   - Handles loading and error states
 
-4. **Components Structure**
-   - `Header`: Navigation and theme toggle
-   - `Hero`: Landing section with profile picture
-   - `About`: Personal introduction
-   - `Experience`: Work history in interactive timeline
-   - `Skills`: Technical skills in categorized cards
-   - `LRC`: Learning resources and certifications
-   - `Contact`: Contact form and social links
-   - `Footer`: Copyright and social links
+3. **Component Data Flow**
+   - Components use `useQuery` hook to fetch data
+   - Loading states show spinners
+   - Error states handle gracefully
+   - Data updates automatically refresh UI
 
-5. **Data Management (`constants/index.ts`)**
-   - Centralizes all static content
-   - Defines navigation items
-   - Stores experience and skills data
-   - Contains social links and learning resources
+### Backend API Structure
+
+```typescript
+// Profile API Response
+interface Profile {
+  name: string;
+  title: string;
+  bio: string;
+  imageUrl: string;
+}
+
+// Experience API Response
+interface Experience {
+  id: number;
+  company: string;
+  position: string;
+  period: string;
+  description: string[];
+}
+
+// Skills API Response
+interface Skill {
+  id: number;
+  category: string;
+  skills: string[];
+}
+```
 
 ## 💡 Key Features
 
-- **Responsive Design**: Fully responsive layout that works on all device sizes
+- **Dynamic Data Loading**: All content fetched from backend API
+- **Responsive Design**: Works on all device sizes
 - **Dark Mode**: Toggle between light and dark themes
-- **Smooth Animations**: Subtle animations for enhanced user experience
-- **Interactive Sections**: Dynamic experience timeline and skills showcase
-- **Type Safety**: Full TypeScript implementation for robust code
-- **SEO Ready**: Proper meta tags and semantic HTML structure
+- **Type Safety**: Full TypeScript implementation
+- **Error Handling**: Graceful error states
+- **Loading States**: Smooth loading indicators
+- **Data Caching**: Efficient data management with React Query
 
 ## 🔧 Development
 
-1. **Installation**
+1. **Environment Setup**
+   ```bash
+   # Create .env file
+   VITE_API_URL=http://localhost:8080/api
+   ```
+
+2. **Installation**
    ```bash
    npm install
    ```
 
-2. **Start Development Server**
+3. **Start Development Server**
    ```bash
    npm run dev
    ```
 
-3. **Build for Production**
+4. **Build for Production**
    ```bash
    npm run build
    ```
 
 ## 📝 Adding New Features
 
-### Adding a New Section
-1. Create a new component in `src/components`
-2. Add necessary types in `src/types/index.ts`
-3. Add any constants in `src/constants/index.ts`
-4. Import and add the component to `App.tsx`
-5. Add navigation item in `constants/index.ts` if needed
+### Adding New API Integration
+1. Define interface in `services/api.ts`
+2. Add service method in API client
+3. Create new component using `useQuery`
+4. Handle loading and error states
 
-### Modifying Styles
-- Add custom styles in `index.css`
-- Use Tailwind classes for component styling
-- Extend Tailwind config in `tailwind.config.js` if needed
+### Modifying API Endpoints
+1. Update service methods in `services/api.ts`
+2. Adjust TypeScript interfaces if needed
+3. Update environment variables if necessary
 
-### Adding New Dependencies
-1. Install using npm
-2. Update `package.json` if needed
-3. Import in respective components
-
-## 🎨 Customization
-
-1. **Colors**: Modify the color scheme in `tailwind.config.js`
-2. **Content**: Update text and data in `constants/index.ts`
-3. **Styling**: Customize component styles using Tailwind classes
-4. **Layout**: Modify component structure in individual component files
+### Component Integration
+1. Import required service
+2. Use `useQuery` hook for data fetching
+3. Implement loading state
+4. Handle potential errors
+5. Display fetched data
 
 ## 🔍 Code Conventions
 
-- Use TypeScript for all new components
-- Follow existing naming conventions
-- Maintain component modularity
-- Use Tailwind for styling
-- Keep components focused and single-responsibility
-- Document complex logic with comments
+- Use TypeScript for type safety
+- Follow REST API best practices
+- Implement proper error handling
+- Use React Query for data fetching
+- Keep components focused and modular
+- Document API interfaces
+
+## 🚀 Deployment
+
+1. **Frontend Deployment**
+   - Build React application
+   - Deploy to static hosting
+   - Set environment variables
+
+2. **API Configuration**
+   - Update API URL in production
+   - Ensure CORS is configured
+   - Verify API endpoints
+
+## 🔒 Security Considerations
+
+- API URL in environment variables
+- CORS properly configured
+- Error handling doesn't expose sensitive info
+- Type checking for API responses
+- Secure communication over HTTPS
+
+## 🐛 Troubleshooting
+
+1. **API Connection Issues**
+   - Check API URL in .env
+   - Verify backend is running
+   - Check CORS configuration
+   - Inspect network requests
+
+2. **Type Errors**
+   - Verify API response matches interfaces
+   - Check for null handling
+   - Ensure optional fields are marked
+
+3. **Data Loading Issues**
+   - Check React Query configuration
+   - Verify loading states
+   - Inspect error handling
